@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="We know your  Palm better!"
+    android:textSize="20sp"
+    android:layout_margin="20sp"
+    />
+    <TextView
+            android:id="@+id/mesg"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+
+            android:textSize="20sp"
+            android:layout_margin="20sp"
+            />
+    <Button android:id="@+id/close"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/camera_button" />
+
+
+</LinearLayout>
+
