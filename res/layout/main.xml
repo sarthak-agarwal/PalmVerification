@@ -11,6 +11,10 @@
     android:textSize="20sp"
     android:layout_margin="20sp"
     />
+    <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/input_name"/>
     <TextView
             android:id="@+id/mesg"
             android:layout_width="fill_parent"

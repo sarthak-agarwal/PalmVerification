@@ -6,6 +6,7 @@ import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class    MyActivity extends Activity
@@ -24,7 +25,12 @@ public class    MyActivity extends Activity
         // Perform action on click
                 Intent intent = new Intent(MyActivity.this,CamPrv.class);
 
-              startActivity(intent);
+          EditText nameInput = (EditText) findViewById(R.id.input_name);
+                String name = nameInput.getText().toString();
+                intent.putExtra("name",name);
+
+                 startActivity(intent);
+
               finish();
 
          //   c = Camera.open(); // attempt to get a Camera instance

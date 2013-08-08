@@ -44,14 +44,17 @@ public class CamPrv extends Activity {
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     private static final String APP_NAME = "VerifyPalm";
-
+    private String name;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.campy_ly);
       //  canvasDrawing= (CanvasDrawing) this.findViewById(R.id.cmr_frame);
+        Bundle info = getIntent().getExtras();
+        name = info.getString("name");
         setUpCamera();
+
     }
     public void setUpCamera()
     {
@@ -62,7 +65,8 @@ public class CamPrv extends Activity {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
 
-                File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE);
+
+                File pictureFile = getOutputMediaFile(MEDIA_TYPE_IMAGE, name);
                 if (pictureFile == null){
                     Log.d("********", "Error creating media file, check storage permissions: ");
 
@@ -136,7 +140,7 @@ public class CamPrv extends Activity {
         cameraSurfaceView.surfaceDestroyed(cameraSurfaceView.cameraSurfaceHolder);
     }
 
-    private static File getOutputMediaFile(int type){
+    private static File getOutputMediaFile(int type, String name){
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 
@@ -163,9 +167,9 @@ public class CamPrv extends Activity {
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
+                    name + "_"+ timeStamp + ".jpg");
             Log.d("saved",mediaStorageDir.getPath() + File.separator +
-                    "IMG_"+ timeStamp + ".jpg");
+                    name + "_"+ timeStamp + ".jpg");
         } else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "VID_"+ timeStamp + ".mp4");
