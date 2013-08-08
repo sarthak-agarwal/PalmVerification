@@ -97,7 +97,8 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     public void surfaceDestroyed(SurfaceHolder holder) {
         //To change body of implemented methods use File | Settings | File Templates.
 
-        camera.stopPreview();
+
+     //   camera.stopPreview();
         camera.release();
         //camera=null;
     }

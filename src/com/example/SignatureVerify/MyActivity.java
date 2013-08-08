@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MyActivity extends Activity
+public class    MyActivity extends Activity
 {
     /** Called when the activity is first created. */
     @Override
@@ -25,7 +25,7 @@ public class MyActivity extends Activity
                 Intent intent = new Intent(MyActivity.this,CamPrv.class);
 
               startActivity(intent);
-                  finish();
+              finish();
 
          //   c = Camera.open(); // attempt to get a Camera instance
 

@@ -8,10 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.*;
 import com.example.SignatureVerify.R;
 import android.hardware.Camera;
 import android.graphics.Canvas;
@@ -40,6 +37,9 @@ public class CamPrv extends Activity {
     protected FrameLayout frameLayout;
     protected CameraSurfaceView cameraSurfaceView;
     private Button captureButton;
+    private Button keepButton;
+    private Button continueButton;
+    private LinearLayout buttonsLinearLayout;
     public Camera.PictureCallback mPicture;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
@@ -87,21 +87,53 @@ public class CamPrv extends Activity {
        // imageView= new ImageView(getApplicationContext());
       //  imageView.setBackgroundColor(Color.GRAY);
         frameLayout =  (FrameLayout) findViewById(R.id.cmr_frame);
-        captureButton =(Button) findViewById(R.id.button);
+        captureButton = (Button) findViewById(R.id.button);
         //frameLayout.addView(imageView);
         frameLayout.addView(cameraSurfaceView);
         frameLayout.bringChildToFront(imageView);
         frameLayout.bringChildToFront(captureButton);
+
+        buttonsLinearLayout = (LinearLayout) findViewById(R.id.LL_buttons);
+        frameLayout.bringChildToFront(buttonsLinearLayout);
+
         captureButton.setOnClickListener(
-                new View.OnClickListener() {
+                new View.OnClickListener(){
                     @Override
                     public void onClick(View v) {
                         // get an image from the camera
 
+                        captureButton.setVisibility(View.GONE);
+
+                        buttonsLinearLayout.setVisibility(View.VISIBLE);
+
                         cameraSurfaceView.capture(mPicture);
+
                     }
                 }
         );
+        keepButton = (Button) findViewById(R.id.keep_button);
+        continueButton = (Button) findViewById(R.id.continue_button);
+
+        continueButton.setOnClickListener(
+                new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+
+
+                           // Intent intent = new Intent(CamPrv.this, MyActivity.class);
+                           // startActivity(intent);
+                           recreate();
+
+                    }
+                }
+        );
+
+    }
+    @Override
+    protected void onDestroy(){
+
+        super.onDestroy();
+        cameraSurfaceView.surfaceDestroyed(cameraSurfaceView.cameraSurfaceHolder);
     }
 
     private static File getOutputMediaFile(int type){

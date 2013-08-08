@@ -27,14 +27,45 @@
                 android:src="@drawable/hand"
                 android:layout_gravity="center"/>
         <Button
-                android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:text="Capture"
 
+                android:layout_height="35dp"
+                android:layout_width="fill_parent"
+                android:text="Capture"
+                android:layout_weight="1"
                 android:id="@+id/button" android:layout_gravity="center_horizontal|bottom"
                 android:longClickable="false" android:focusable="false" android:focusableInTouchMode="false"
                 android:enabled="true" android:clickable="true" android:textSize="10dp"/>
 
+        <LinearLayout
+        android:id="@+id/LL_buttons"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        android:layout_gravity="center_horizontal|bottom">
+
+
+            <Button
+
+                    android:layout_height="35dp"
+                    android:text="Keep"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/keep_button" android:layout_gravity="left|bottom"
+                    android:longClickable="false" android:focusable="false" android:focusableInTouchMode="false"
+                    android:enabled="true" android:clickable="true" android:textSize="10dp"/>
+            <Button
+
+                    android:layout_height="35dp"
+                    android:text="Continue"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/continue_button" android:layout_gravity="right|bottom"
+                    android:longClickable="false" android:focusable="false" android:focusableInTouchMode="false"
+                    android:enabled="true" android:clickable="true" android:textSize="10dp"/>
+
+
+        </LinearLayout>
     </FrameLayout>
 
 
