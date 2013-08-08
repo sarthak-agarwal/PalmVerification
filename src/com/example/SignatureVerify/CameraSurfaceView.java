@@ -3,6 +3,7 @@ package com.example.SignatureVerify;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.hardware.Camera;
+import android.media.AudioManager;
 import android.os.Build;
 import android.util.Log;
 import android.view.Surface;
@@ -21,34 +22,29 @@ import java.lang.reflect.Method;
  */
 public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Callback{
 
-    public SurfaceHolder mHolder;
-    public Camera camera=null;
+    public SurfaceHolder cameraSurfaceHolder;
+    public Camera camera = null;
     @SuppressWarnings("deprecation")
-    public CameraSurfaceView(Context context)
-    {
-        super(context);
-         mHolder=getHolder();
-        mHolder.addCallback(this);
-        this.mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        camera= Camera.open();
+    public CameraSurfaceView(Context context){
 
+        super(context);
+        cameraSurfaceHolder = getHolder();
+        cameraSurfaceHolder.addCallback(this);
+        this.cameraSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+        camera = Camera.open();
 
     }
 
-
-
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        //To change body of implemented methods use File | Settings | File Templates.
 
         try {
            // camera= Camera.open();
-            camera.setPreviewDisplay(mHolder);
+            camera.setPreviewDisplay(cameraSurfaceHolder);
             camera.startPreview();
         }
-        catch(Exception e)
-        {
-            Log.w("exception:",e.getMessage());
+        catch(Exception e) {
+            Log.e("Error setting camera pane ",e.getMessage());
         }
 
     }
@@ -61,27 +57,40 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
       //  params.setPreviewSize(width,height);
        // camera.setParameters(params);
         // camera= Camera.open();
-        if (Integer.parseInt(Build.VERSION.SDK) >= 8)
+
+        if (cameraSurfaceHolder.getSurface() == null){
+            // preview surface does not exist
+            return;
+        }
+
+        try {
+            camera.stopPreview();
+        } catch (Exception e){
+            // ignore: tried to stop a non-existent preview
+        }
+
+        if (Integer.parseInt(Build.VERSION.SDK) >= 8){
             setDisplayOrientation(camera, 90);
-        else
-        {
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-            {
+        }
+        else{
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
                 params.set("orientation", "portrait");
-                params.set("rotation", 90);
+             //   params.set("rotation", 90);
             }
-            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
-            {
+            if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
                 params.set("orientation", "landscape");
-                params.set("rotation", 90);
+             //   params.set("rotation", 90);
             }
         }
         try {
-            camera.setPreviewDisplay(mHolder);
+            camera.setPreviewDisplay(cameraSurfaceHolder);
+            camera.startPreview();
+
         } catch (IOException e) {
-            Log.w("ds", e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
+            Log.e("Error: starting camera view", e.getMessage());  //To change body of catch statement use File | Settings | File Templates.
         }
-        camera.startPreview();
+
+
     }
 
     @Override
@@ -94,7 +103,20 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
     }
     public void capture(Camera.PictureCallback jpegHandler)
     {
-         camera.takePicture(null,null,jpegHandler);
+            camera.autoFocus(new Camera.AutoFocusCallback(){
+
+                @Override
+                public void onAutoFocus(boolean a, Camera camera1){
+
+                }
+    });
+            Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
+            public void onShutter() {
+                AudioManager mgr = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+                mgr.playSoundEffect(AudioManager.FLAG_PLAY_SOUND);
+            }
+        };
+         camera.takePicture(shutterCallback, null, jpegHandler);
     }
     protected void setDisplayOrientation(Camera camera, int angle){
         Method downPolymorphic;

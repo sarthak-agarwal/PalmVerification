@@ -34,14 +34,14 @@ import android.view.View;
  */
 public class CamPrv extends Activity {
 
-  //      private CanvasDrawing canvasDrawing;
     protected ImageView imageView;
     protected FrameLayout frameLayout;
     protected CameraSurfaceView cameraSurfaceView;
-    private Button camButton;
+    private Button captureButton;
     public Camera.PictureCallback mPicture;
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
+    private static final String APP_NAME = "VerifyPalm";
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -55,7 +55,6 @@ public class CamPrv extends Activity {
     {
         cameraSurfaceView=new CameraSurfaceView(this);
         imageView= (ImageView) findViewById(R.id.image);
-        camButton= (Button) findViewById(R.id.button);
         mPicture = new Camera.PictureCallback() {
 
             @Override
@@ -83,17 +82,18 @@ public class CamPrv extends Activity {
 
        // imageView= new ImageView(getApplicationContext());
       //  imageView.setBackgroundColor(Color.GRAY);
-        frameLayout=  (FrameLayout) findViewById(R.id.cmr_frame);
-        camButton=(Button) findViewById(R.id.button);
+        frameLayout =  (FrameLayout) findViewById(R.id.cmr_frame);
+        captureButton =(Button) findViewById(R.id.button);
         //frameLayout.addView(imageView);
         frameLayout.addView(cameraSurfaceView);
         frameLayout.bringChildToFront(imageView);
-        frameLayout.bringChildToFront(camButton);
-        camButton.setOnClickListener(
+        frameLayout.bringChildToFront(captureButton);
+        captureButton.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         // get an image from the camera
+
                         cameraSurfaceView.capture(mPicture);
                     }
                 }
@@ -104,10 +104,11 @@ public class CamPrv extends Activity {
         // To be safe, you should check that the SDCard is mounted
         // using Environment.getExternalStorageState() before doing this.
 
-        File mediaStorageDir = new File(Environment.getExternalStorageDirectory().getPath()+"/MyCameraApp");
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory().getPath()+"/"+APP_NAME);
 
 
         Log.d("dir: ",  mediaStorageDir.getAbsolutePath());
+        Log.d("debug2: ",  mediaStorageDir.getPath());
         Log.d("sdsd",Environment.getExternalStorageDirectory().getPath());
 
         // This location works best if you want the created images to be shared
@@ -116,7 +117,7 @@ public class CamPrv extends Activity {
         // Create the storage directory if it does not exist
         if (! mediaStorageDir.exists()){
             if (! mediaStorageDir.mkdirs()){
-                Log.e("MyCameraApp", "failed to create directory");
+                Log.e("VerifyPalm", "failed to create directory");
                 return null;
             }
         }
@@ -126,6 +127,8 @@ public class CamPrv extends Activity {
         File mediaFile;
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "IMG_"+ timeStamp + ".jpg");
+            Log.d("saved",mediaStorageDir.getPath() + File.separator +
                     "IMG_"+ timeStamp + ".jpg");
         } else if(type == MEDIA_TYPE_VIDEO) {
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
