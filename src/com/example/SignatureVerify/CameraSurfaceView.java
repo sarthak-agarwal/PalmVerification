@@ -101,22 +101,25 @@ public class CameraSurfaceView extends SurfaceView implements SurfaceHolder.Call
         camera.release();
         //camera=null;
     }
-    public void capture(Camera.PictureCallback jpegHandler)
+    public void capture(final Camera.PictureCallback jpegHandler)
     {
-            camera.autoFocus(new Camera.AutoFocusCallback(){
-
-                @Override
-                public void onAutoFocus(boolean a, Camera camera1){
-
-                }
-    });
-            Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
+        final Camera.ShutterCallback shutterCallback = new Camera.ShutterCallback() {
             public void onShutter() {
                 AudioManager mgr = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
                 mgr.playSoundEffect(AudioManager.FLAG_PLAY_SOUND);
             }
         };
-         camera.takePicture(shutterCallback, null, jpegHandler);
+
+        camera.autoFocus(new Camera.AutoFocusCallback(){
+
+            @Override
+            public void onAutoFocus(boolean success, Camera camera){
+                    Log.d("focusing", "onAutoFocus()");
+                    camera.takePicture(shutterCallback, null, jpegHandler);
+            }
+    });
+
+
     }
     protected void setDisplayOrientation(Camera camera, int angle){
         Method downPolymorphic;
