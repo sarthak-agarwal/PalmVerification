@@ -37,7 +37,6 @@ public class CamPrv extends Activity {
     protected FrameLayout frameLayout;
     protected CameraSurfaceView cameraSurfaceView;
     private Button captureButton;
-    private Button keepButton;
     private Button continueButton;
     private LinearLayout buttonsLinearLayout;
     public Camera.PictureCallback mPicture;
@@ -115,7 +114,6 @@ public class CamPrv extends Activity {
                     }
                 }
         );
-        keepButton = (Button) findViewById(R.id.keep_button);
         continueButton = (Button) findViewById(R.id.continue_button);
 
         continueButton.setOnClickListener(
